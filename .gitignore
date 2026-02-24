@@ -1,0 +1,21 @@
+# Directorios
+node_modules/
+dist/
+build/
+coverage/
+
+# Archivos
+*.log
+*.tmp
+*.cache
+*.env
+
+# IDE y editor
+.vscode/
+.idea/
+*.vscode/
+*.idea/
+
+# Otros
+.DS_Store  # macOS
+Thumbs.db  # Windows
