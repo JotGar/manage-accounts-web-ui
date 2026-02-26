@@ -17,26 +17,21 @@ import { TransactionForm } from "@/src/components/features/transactions/transact
 
 // Types
 import type {
-  Producto,
-  Transaction,
   IngresoFijo,
   GastoFijo,
   Investment,
-  CreateTransactionInput,
-  CreateProductInput,
-  UpdateProductInput,
   CreateBudgetItemInput,
-  CreateInvestmentInput,
-  AdjustInvestmentInput,
+  CreateInvestmentInput
 } from "../src/types"
 
-// Mock Data
+// Hooks (servicios con localStorage)
+import { useProducts, useTransactions } from "@/src/hooks"
+
+// Mock Data (solo como fallback inicial)
 import {
-  mockProductos,
-  mockTransacciones,
-  mockIngresosFijos,
-  mockGastosFijos,
-  mockInversiones,
+  mockFixedIncomes,
+  mockFixedExpenses,
+  mockInvestments,
 } from "../src/data"
 
 // Utils
@@ -58,12 +53,12 @@ export default function FinanceApp() {
   const [showAddTransaction, setShowAddTransaction] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  // Data State - Inicializado con mock data
-  const [productos, setProductos] = useState<Producto[]>(mockProductos)
-  const [ingresosFijos, setIngresosFijos] = useState<IngresoFijo[]>(mockIngresosFijos)
-  const [gastosFijos, setGastosFijos] = useState<GastoFijo[]>(mockGastosFijos)
-  const [inversiones, setInversiones] = useState<Investment[]>(mockInversiones)
-  const [transacciones, setTransacciones] = useState<Transaction[]>(mockTransacciones)
+  // Data State - Usando hooks con localStorage
+  const { products: productos, addProduct, updateProduct: updateProductFn, deleteProduct } = useProducts()
+  const { transactions: transacciones, addTransaction, deleteTransaction } = useTransactions()
+  const [ingresosFijos, setIngresosFijos] = useState<IngresoFijo[]>(mockFixedIncomes)
+  const [gastosFijos, setGastosFijos] = useState<GastoFijo[]>(mockFixedExpenses)
+  const [inversiones, setInversiones] = useState<Investment[]>(mockInvestments)
 
   // ============================================================================
   // CALCULATION FUNCTIONS
@@ -84,71 +79,9 @@ export default function FinanceApp() {
   const totalGanancias = totalActual - totalInvertido
 
   // ============================================================================
-  // CRUD OPERATIONS - PRODUCTOS
+  // CRUD OPERATIONS - Ahora gestionados por los hooks useProducts y useTransactions
+  // Los datos se persisten en localStorage automáticamente
   // ============================================================================
-
-  const addProduct = (product: CreateProductInput) => {
-    const newProduct: Producto = {
-      ...product,
-      id: Math.max(0, ...productos.map((p) => p.id)) + 1,
-      status: "Saldo",
-      includeInTotal: product.includeInTotal ?? true,
-    }
-    setProductos([...productos, newProduct])
-  }
-
-  const deleteProduct = (id: number) => {
-    setProductos(productos.filter((p) => p.id !== id))
-  }
-
-  const updateProduct = (updatedProduct: UpdateProductInput) => {
-    setProductos(
-      productos.map((p) => (p.id === updatedProduct.id ? { ...p, ...updatedProduct } : p))
-    )
-  }
-
-  // ============================================================================
-  // CRUD OPERATIONS - TRANSACCIONES
-  // ============================================================================
-
-  const addTransaction = (transaction: CreateTransactionInput) => {
-    const newTransaction: Transaction = {
-      ...transaction,
-      id: Math.max(0, ...transacciones.map((t) => t.id)) + 1,
-    }
-    setTransacciones([...transacciones, newTransaction])
-
-    // Actualizar balance de productos según el tipo de transacción
-    if (transaction.type === "income" && transaction.account) {
-      setProductos(
-        productos.map((p) =>
-          p.name === transaction.account ? { ...p, balance: p.balance + transaction.amount } : p
-        )
-      )
-    } else if (transaction.type === "expense" && transaction.account) {
-      setProductos(
-        productos.map((p) =>
-          p.name === transaction.account ? { ...p, balance: p.balance - transaction.amount } : p
-        )
-      )
-    } else if (transaction.type === "transfer" && transaction.fromAccount && transaction.toAccount) {
-      setProductos(
-        productos.map((p) => {
-          if (p.name === transaction.fromAccount) {
-            return { ...p, balance: p.balance - transaction.amount }
-          }
-          if (p.name === transaction.toAccount) {
-            return { ...p, balance: p.balance + transaction.amount }
-          }
-          return p
-        })
-      )
-    }
-  }
-
-  const deleteTransaction = (id: number) => {
-    setTransacciones(transacciones.filter((t) => t.id !== id))
-  }
 
   // ============================================================================
   // CRUD OPERATIONS - PRESUPUESTO
@@ -197,25 +130,25 @@ export default function FinanceApp() {
     setInversiones(inversiones.filter((i) => i.id !== id))
   }
 
-  const adjustInversion = (adjustment: AdjustInvestmentInput) => {
+  const adjustInversion = (id: number, newAmount: number, reason: string) => {
     setInversiones(
       inversiones.map((inv) => {
-        if (inv.id === adjustment.investmentId) {
+        if (inv.id === id) {
           const adjustmentType: "increase" | "decrease" =
-            adjustment.newAmount > inv.currentAmount ? "increase" : "decrease"
+            newAmount > inv.currentAmount ? "increase" : "decrease"
 
           const newAdjustment = {
             id: Math.max(0, ...inv.adjustments.map((a) => a.id)) + 1,
-            date: adjustment.date || new Date().toISOString().split("T")[0],
+            date: new Date().toISOString().split("T")[0],
             previousAmount: inv.currentAmount,
-            newAmount: adjustment.newAmount,
-            reason: adjustment.reason,
+            newAmount: newAmount,
+            reason: reason,
             type: adjustmentType,
           }
 
           return {
             ...inv,
-            currentAmount: adjustment.newAmount,
+            currentAmount: newAmount,
             adjustments: [...inv.adjustments, newAdjustment],
           }
         }
@@ -365,7 +298,7 @@ export default function FinanceApp() {
             productos={productos}
             onAddProduct={addProduct}
             onDeleteProduct={deleteProduct}
-            onUpdateProduct={updateProduct}
+            onUpdateProduct={updateProductFn}
             formatCurrency={formatCurrency}
             darkMode={darkMode}
           />

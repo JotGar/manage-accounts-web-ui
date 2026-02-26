@@ -1,7 +1,7 @@
-// data/mock-inversiones.ts
-import { Investment } from "../types"
+// data/mock-investments.ts
+import { Investment } from "../types/investment"
 
-export const mockInversiones: Investment[] = [
+export const mockInvestments: Investment[] = [
   {
     id: 1,
     name: "Apartamento Bora",

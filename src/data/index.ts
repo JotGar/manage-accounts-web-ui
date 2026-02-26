@@ -1,9 +1,9 @@
 // data/index.ts
 /**
- * Exportación centralizada de todos los datos mock
+ * Centralized export of all mock data
  */
 
-export { mockProductos } from "./mock-productos"
-export { mockTransacciones } from "./mock-transacciones"
-export { mockIngresosFijos, mockGastosFijos } from "./mock-presupuesto"
-export { mockInversiones } from "./mock-inversiones"
+export { mockProducts } from "./mock-products"
+export { mockTransactions } from "./mock-transactions"
+export { mockFixedIncomes, mockFixedExpenses } from "./mock-budget"
+export { mockInvestments } from "./mock-investments"

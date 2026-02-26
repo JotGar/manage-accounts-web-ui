@@ -1,7 +1,7 @@
-// data/mock-presupuesto.ts
-import { IngresoFijo, GastoFijo } from "../types"
+// data/mock-budget.ts
+import { IngresoFijo, GastoFijo } from "../types/budget"
 
-export const mockIngresosFijos: IngresoFijo[] = [
+export const mockFixedIncomes: IngresoFijo[] = [
   {
     id: 1,
     name: "Salario Principal",
@@ -20,7 +20,7 @@ export const mockIngresosFijos: IngresoFijo[] = [
   },
 ]
 
-export const mockGastosFijos: GastoFijo[] = [
+export const mockFixedExpenses: GastoFijo[] = [
   {
     id: 1,
     name: "Arriendo",

@@ -1,9 +1,7 @@
-// data/mock-transacciones.ts
+// data/mock-transactions.ts
+import { Transaction } from "../types/transaction"
 
-import { Transaction } from "../types";
-
-
-export const mockTransacciones: Transaction[] = [
+export const mockTransactions: Transaction[] = [
   {
     id: 1,
     type: "income",

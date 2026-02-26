@@ -1,7 +1,7 @@
-// data/mock-productos.ts
-import { Producto } from "../types"
+// data/mock-products.ts
+import { Producto } from "../types/producto"
 
-export const mockProductos: Producto[] = [
+export const mockProducts: Producto[] = [
   {
     id: 1,
     name: "Cuenta de Ahorros",

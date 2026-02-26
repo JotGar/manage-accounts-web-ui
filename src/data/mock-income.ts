@@ -1,4 +1,5 @@
-const initialIngresos = [
+// data/mock-income.ts
+const initialIncomes = [
   {
     id: 1,
     name: "Salario Principal",
@@ -15,6 +16,6 @@ const initialIngresos = [
     category: "Trabajo Independiente",
     frequency: "Mensual",
   },
-];
+]
 
-export default initialIngresos;
+export default initialIncomes
