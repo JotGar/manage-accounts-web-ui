@@ -19,10 +19,12 @@ import { TransactionForm } from "@/src/components/features/transactions/transact
 import type {
   IngresoFijo,
   GastoFijo,
-  Investment,
   CreateBudgetItemInput,
+} from "../src/types/budget"
+import type {
+  Investment,
   CreateInvestmentInput
-} from "../src/types"
+} from "../src/types/investment"
 
 // Hooks (servicios con localStorage)
 import { useProducts, useTransactions } from "@/src/hooks"
@@ -37,13 +39,21 @@ import {
 // Utils
 import { cn, formatCurrency } from "@/src/lib/utils"
 
+// Configuración de características - Controla qué secciones son visibles
+const FEATURES = {
+  showBudget: false, // Ocultar presupuesto
+  showInvestments: false, // Ocultar inversiones
+  showSettings: true, // Ocultar configuración
+}
+
+// Menú visible basado en configuración
 const sidebarItems = [
-  { id: "inicio", label: "Inicio", icon: Home, active: false },
-  { id: "transacciones", label: "Transacciones", icon: ArrowUpDown, active: false },
+  { id: "inicio", label: "Inicio", icon: Home, active: true },
   { id: "productos", label: "Productos", icon: CreditCard, active: false },
-  { id: "presupuesto", label: "Presupuesto", icon: BarChart3, active: false },
-  { id: "inversiones", label: "Inversiones", icon: TrendingUp, active: true },
-  { id: "configuracion", label: "Configuración", icon: Settings, active: false },
+  { id: "transacciones", label: "Transacciones", icon: ArrowUpDown, active: false },
+  ...(FEATURES.showBudget ? [{ id: "presupuesto", label: "Presupuesto", icon: BarChart3, active: false }] : []),
+  ...(FEATURES.showInvestments ? [{ id: "inversiones", label: "Inversiones", icon: TrendingUp, active: false }] : []),
+  ...(FEATURES.showSettings ? [{ id: "configuracion", label: "Configuración", icon: Settings, active: false }] : []),
 ]
 
 export default function FinanceApp() {
@@ -53,9 +63,11 @@ export default function FinanceApp() {
   const [showAddTransaction, setShowAddTransaction] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  // Data State - Usando hooks con localStorage
+  // Data State - Usando hooks con localStorage para Productos y Transacciones
   const { products: productos, addProduct, updateProduct: updateProductFn, deleteProduct } = useProducts()
   const { transactions: transacciones, addTransaction, deleteTransaction } = useTransactions()
+  
+  // Estado local para Presupuesto e Inversiones (por ahora no usa localStorage)
   const [ingresosFijos, setIngresosFijos] = useState<IngresoFijo[]>(mockFixedIncomes)
   const [gastosFijos, setGastosFijos] = useState<GastoFijo[]>(mockFixedExpenses)
   const [inversiones, setInversiones] = useState<Investment[]>(mockInvestments)
@@ -77,11 +89,6 @@ export default function FinanceApp() {
   const totalInvertido = inversiones.reduce((sum, inv) => sum + inv.initialAmount, 0)
   const totalActual = inversiones.reduce((sum, inv) => sum + inv.currentAmount, 0)
   const totalGanancias = totalActual - totalInvertido
-
-  // ============================================================================
-  // CRUD OPERATIONS - Ahora gestionados por los hooks useProducts y useTransactions
-  // Los datos se persisten en localStorage automáticamente
-  // ============================================================================
 
   // ============================================================================
   // CRUD OPERATIONS - PRESUPUESTO
@@ -352,11 +359,11 @@ export default function FinanceApp() {
             {/* Products Section */}
             {renderProductSection("Productos", productos, CreditCard)}
 
-            {/* Budget Section with calculated values */}
-            {renderBudgetCards()}
+            {/* Budget Section - Controlado por FEATURES */}
+            {FEATURES.showBudget && renderBudgetCards()}
 
-            {/* Investments Section with calculated values */}
-            {renderInvestmentCards()}
+            {/* Investments Section - Controlado por FEATURES */}
+            {FEATURES.showInvestments && renderInvestmentCards()}
           </div>
         )
       case "configuracion":

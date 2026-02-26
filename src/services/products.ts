@@ -19,6 +19,7 @@ const getStoredProducts = (): Producto[] => {
 const saveProducts = (products: Producto[]): void => {
   setLocalStorage(STORAGE_KEYS.PRODUCTOS, products)
 }
+const BALANCE = "Saldo"
 
 export const productsService = {
   /**
@@ -45,7 +46,7 @@ export const productsService = {
     const newProduct: Producto = {
       ...input,
       id: Math.max(0, ...products.map((p) => p.id)) + 1,
-      status: "Saldo",
+      status: BALANCE,
       includeInTotal: input.includeInTotal ?? true,
     }
 
