@@ -15,29 +15,21 @@ import { TransactionsSection } from "@/src/components/features/transactions/tran
 import { ProductsSection } from "@/src/components/features/products/products-section"
 import { TransactionForm } from "@/src/components/features/transactions/transaction-form"
 
-// Types
-import type {
-  IngresoFijo,
-  GastoFijo,
-  CreateBudgetItemInput,
-} from "../src/types/budget"
-import type {
-  Investment,
-  CreateInvestmentInput
-} from "../src/types/investment"
+// Shared Components
+import { ItemsListCard } from "@/src/components/shared/items-list-card"
 
 // Hooks (servicios con localStorage)
-import { useProducts, useTransactions } from "@/src/hooks"
-
-// Mock Data (solo como fallback inicial)
-import {
-  mockFixedIncomes,
-  mockFixedExpenses,
-  mockInvestments,
-} from "../src/data"
+import { useProducts, useTransactions, useBudget, useInvestments } from "@/src/hooks"
 
 // Utils
 import { cn, formatCurrency } from "@/src/lib/utils"
+
+// Calculations
+import {
+  calculateTotalBalance, calculateTotalIngresos, calculateTotalGastos,
+  calculateEstimadoFinMes, calculateTotalInvertido, calculateTotalActual,
+  calculateTotalGanancias,
+} from "@/src/lib/calculations"
 
 // Configuración de características - Controla qué secciones son visibles
 const FEATURES = {
@@ -63,106 +55,24 @@ export default function FinanceApp() {
   const [showAddTransaction, setShowAddTransaction] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  // Data State - Usando hooks con localStorage para Productos y Transacciones
+  // Data State - Usando hooks con localStorage
   const { products: productos, addProduct, updateProduct: updateProductFn, deleteProduct } = useProducts()
   const { transactions: transacciones, addTransaction, deleteTransaction } = useTransactions()
-  
-  // Estado local para Presupuesto e Inversiones (por ahora no usa localStorage)
-  const [ingresosFijos, setIngresosFijos] = useState<IngresoFijo[]>(mockFixedIncomes)
-  const [gastosFijos, setGastosFijos] = useState<GastoFijo[]>(mockFixedExpenses)
-  const [inversiones, setInversiones] = useState<Investment[]>(mockInvestments)
+  const { ingresosFijos, gastosFijos, addIngreso, deleteIngreso, addGasto, deleteGasto } = useBudget()
+  const { inversiones, addInversion, deleteInversion, adjustInversion } = useInvestments()
 
   // ============================================================================
-  // CALCULATION FUNCTIONS
+  // CALCULATIONS (using lib/calculations.ts)
   // ============================================================================
 
-  const calculateTotalBalance = () => {
-    return productos
-      .filter((producto) => producto.includeInTotal && producto.currency === "COP")
-      .reduce((total, producto) => total + producto.balance, 0)
-  }
+  const totalBalance = calculateTotalBalance(productos)
+  const totalIngresos = calculateTotalIngresos(ingresosFijos)
+  const totalGastos = calculateTotalGastos(gastosFijos)
+  const estimadoFinMes = calculateEstimadoFinMes(totalIngresos, totalGastos)
 
-  const totalIngresos = ingresosFijos.reduce((sum, ingreso) => sum + ingreso.amount, 0)
-  const totalGastos = gastosFijos.reduce((sum, gasto) => sum + gasto.amount, 0)
-  const estimadoFinMes = totalIngresos - totalGastos
-
-  const totalInvertido = inversiones.reduce((sum, inv) => sum + inv.initialAmount, 0)
-  const totalActual = inversiones.reduce((sum, inv) => sum + inv.currentAmount, 0)
-  const totalGanancias = totalActual - totalInvertido
-
-  // ============================================================================
-  // CRUD OPERATIONS - PRESUPUESTO
-  // ============================================================================
-
-  const addIngreso = (ingreso: CreateBudgetItemInput) => {
-    const newIngreso: IngresoFijo = {
-      ...ingreso,
-      id: Math.max(0, ...ingresosFijos.map((i) => i.id)) + 1,
-    }
-    setIngresosFijos([...ingresosFijos, newIngreso])
-  }
-
-  const deleteIngreso = (id: number) => {
-    setIngresosFijos(ingresosFijos.filter((i) => i.id !== id))
-  }
-
-  const addGasto = (gasto: CreateBudgetItemInput) => {
-    const newGasto: GastoFijo = {
-      ...gasto,
-      id: Math.max(0, ...gastosFijos.map((g) => g.id)) + 1,
-    }
-    setGastosFijos([...gastosFijos, newGasto])
-  }
-
-  const deleteGasto = (id: number) => {
-    setGastosFijos(gastosFijos.filter((g) => g.id !== id))
-  }
-
-  // ============================================================================
-  // CRUD OPERATIONS - INVERSIONES
-  // ============================================================================
-
-  const addInversion = (inversion: CreateInvestmentInput) => {
-    const newInversion: Investment = {
-      ...inversion,
-      id: Math.max(0, ...inversiones.map((i) => i.id)) + 1,
-      currentAmount: inversion.currentAmount ?? inversion.initialAmount,
-      status: inversion.status ?? "Activa",
-      adjustments: [],
-    }
-    setInversiones([...inversiones, newInversion])
-  }
-
-  const deleteInversion = (id: number) => {
-    setInversiones(inversiones.filter((i) => i.id !== id))
-  }
-
-  const adjustInversion = (id: number, newAmount: number, reason: string) => {
-    setInversiones(
-      inversiones.map((inv) => {
-        if (inv.id === id) {
-          const adjustmentType: "increase" | "decrease" =
-            newAmount > inv.currentAmount ? "increase" : "decrease"
-
-          const newAdjustment = {
-            id: Math.max(0, ...inv.adjustments.map((a) => a.id)) + 1,
-            date: new Date().toISOString().split("T")[0],
-            previousAmount: inv.currentAmount,
-            newAmount: newAmount,
-            reason: reason,
-            type: adjustmentType,
-          }
-
-          return {
-            ...inv,
-            currentAmount: newAmount,
-            adjustments: [...inv.adjustments, newAdjustment],
-          }
-        }
-        return inv
-      })
-    )
-  }
+  const totalInvertido = calculateTotalInvertido(inversiones)
+  const totalActual = calculateTotalActual(inversiones)
+  const totalGanancias = calculateTotalGanancias(totalActual, totalInvertido)
 
   // ============================================================================
   // EVENT HANDLERS
@@ -174,112 +84,37 @@ export default function FinanceApp() {
   }
 
   // ============================================================================
-  // RENDER HELPERS
+  // RENDER HELPERS - Now using separate components
   // ============================================================================
 
-  const renderProductSection = (
-    title: string,
-    items: any[],
-    Icon: React.ComponentType<{ className?: string }>
-  ) => {
+  // renderProductSection removed - now using ProductCard component directly
+
+  const renderBudgetCards = () => {
+    const budgetItems: any = [];
+
     return (
-      <Card className={darkMode ? "bg-gray-800 text-white" : ""}>
-        <CardContent className="p-4 sm:p-6">
-          <div className="flex items-center space-x-2 mb-4">
-            <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
-            <h2 className="text-base sm:text-lg font-semibold">{title}</h2>
-          </div>
-          <div className="space-y-3 sm:space-y-4">
-            {items.map((item, index) => (
-              <div key={index} className="flex justify-between items-center pb-3 border-b last:border-0">
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium truncate text-sm sm:text-base">{item.name}</p>
-                  <p className={`text-xs sm:text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
-                    {item.type}
-                  </p>
-                  {item.code && (
-                    <p className={`text-xs ${darkMode ? "text-gray-500" : "text-gray-400"}`}>{item.code}</p>
-                  )}
-                </div>
-                <div className="text-right ml-4">
-                  <p className="font-semibold text-sm sm:text-base whitespace-nowrap">
-                    {formatCurrency(item.balance || item.currentAmount, item.currency)}
-                  </p>
-                  {item.status && (
-                    <p className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{item.status}</p>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <ItemsListCard
+        title="Presupuesto"
+        items={budgetItems}
+        icon={BarChart3}
+        darkMode={darkMode}
+        formatCurrencyFn={formatCurrency}
+      />
     )
   }
 
-  const renderBudgetCards = () => {
-    const budgetItems = [
-      {
-        id: 1,
-        name: "Ingresos Fijos Mensuales",
-        type: "Pesos colombianos",
-        balance: totalIngresos,
-        status: "Presupuestado",
-        currency: "COP",
-      },
-      {
-        id: 2,
-        name: "Gastos Fijos Mensuales",
-        type: "Pesos colombianos",
-        balance: totalGastos,
-        status: "Presupuestado",
-        currency: "COP",
-      },
-      {
-        id: 3,
-        name: "Estimado Fin de Mes",
-        type: "Pesos colombianos",
-        balance: estimadoFinMes,
-        status: estimadoFinMes >= 0 ? "Superávit" : "Déficit",
-        currency: "COP",
-      },
-    ]
-
-    return renderProductSection("Presupuesto", budgetItems, BarChart3)
-  }
-
   const renderInvestmentCards = () => {
-    const inversionItems = [
-      {
-        id: 1,
-        name: "Total Invertido",
-        type: "Pesos colombianos",
-        code: `${inversiones.length} inversiones activas`,
-        currentAmount: totalInvertido,
-        status: "Capital Inicial",
-        currency: "COP",
-      },
-      {
-        id: 2,
-        name: "Valor Actual",
-        type: "Pesos colombianos",
-        code: `${((totalGanancias / totalInvertido) * 100).toFixed(2)}% de rentabilidad`,
-        currentAmount: totalActual,
-        status: "Valor Presente",
-        currency: "COP",
-      },
-      {
-        id: 3,
-        name: "Ganancias/Pérdidas",
-        type: "Pesos colombianos",
-        code: `${((totalGanancias / totalInvertido) * 100).toFixed(2)}% de rentabilidad`,
-        currentAmount: totalGanancias,
-        status: totalGanancias >= 0 ? "Ganancia" : "Pérdida",
-        currency: "COP",
-      },
-    ]
+    const inversionItems: any =  [];
 
-    return renderProductSection("Inversiones", inversionItems, TrendingUp)
+    return (
+      <ItemsListCard
+        title="Inversiones"
+        items={inversionItems}
+        icon={TrendingUp}
+        darkMode={darkMode}
+        formatCurrencyFn={formatCurrency}
+      />
+    )
   }
 
   // ============================================================================
@@ -348,7 +183,7 @@ export default function FinanceApp() {
                   <DollarSign className="h-4 w-4 sm:h-5 sm:w-5" />
                   <span className="text-xs sm:text-sm font-medium">Saldo Disponible</span>
                 </div>
-                <h1 className="text-2xl sm:text-4xl font-bold mb-1">{formatCurrency(calculateTotalBalance())}</h1>
+                <h1 className="text-2xl sm:text-4xl font-bold mb-1">{formatCurrency(totalBalance)}</h1>
                 <p className="text-slate-300 text-xs sm:text-sm">
                   Solo cuentas incluidas en total • {productos.filter((p) => p.includeInTotal).length} de{" "}
                   {productos.length} cuentas
@@ -357,7 +192,15 @@ export default function FinanceApp() {
             </Card>
 
             {/* Products Section */}
-            {renderProductSection("Productos", productos, CreditCard)}
+            {productos.length > 0 && (
+              <ItemsListCard
+                title="Productos"
+                items={productos}
+                icon={CreditCard}
+                darkMode={darkMode}
+                formatCurrencyFn={formatCurrency}
+              />
+            )}
 
             {/* Budget Section - Controlado por FEATURES */}
             {FEATURES.showBudget && renderBudgetCards()}

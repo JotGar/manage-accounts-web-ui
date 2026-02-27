@@ -3,14 +3,13 @@
 
 import { STORAGE_KEYS } from "@/src/constants/storage-keys"
 import { getLocalStorage, setLocalStorage } from "@/src/lib/storage"
-import { mockTransactions } from "@/src/data"
 import type { Transaction, CreateTransactionInput } from "@/src/types/transaction"
 
 /**
  * Obtiene todas las transacciones desde localStorage o usa datos mock como fallback
  */
 const getStoredTransactions = (): Transaction[] => {
-  return getLocalStorage<Transaction[]>(STORAGE_KEYS.TRANSACCIONES, mockTransactions)
+  return getLocalStorage<Transaction[]>(STORAGE_KEYS.TRANSACCIONES, [])
 }
 
 /**

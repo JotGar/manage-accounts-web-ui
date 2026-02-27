@@ -10,7 +10,7 @@ import type { Producto, CreateProductInput, UpdateProductInput } from "@/src/typ
  * Obtiene todos los productos desde localStorage o usa datos mock como fallback
  */
 const getStoredProducts = (): Producto[] => {
-  return getLocalStorage<Producto[]>(STORAGE_KEYS.PRODUCTOS, mockProducts)
+  return getLocalStorage<Producto[]>(STORAGE_KEYS.PRODUCTOS, [])
 }
 
 /**
@@ -19,6 +19,7 @@ const getStoredProducts = (): Producto[] => {
 const saveProducts = (products: Producto[]): void => {
   setLocalStorage(STORAGE_KEYS.PRODUCTOS, products)
 }
+
 const BALANCE = "Saldo"
 
 export const productsService = {
