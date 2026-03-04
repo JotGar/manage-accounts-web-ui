@@ -3,5 +3,5 @@
 
 export { useProducts } from "./use-products"
 export { useTransactions } from "./use-transactions"
-export { useBudget } from "./useBudget"
-export { useInvestments } from "./useInvestments"
+export { useBudget } from "./use-budget"
+export { useInvestments } from "./use-investments"
