@@ -1,18 +1,18 @@
 // types/index.ts
 /**
- * Exportación centralizada de todos los tipos
+ * Centralized export of all types
  */
 
-// Productos
+// Products
 export type {
   Currency,
   ProductType,
-  Producto,
+  Product,
   CreateProductInput,
   UpdateProductInput,
-} from "./producto"
+} from "./products"
 
-// Transacciones
+// Transactions
 export type {
   TransactionType,
   TransactionCategory,
@@ -20,17 +20,17 @@ export type {
   CreateTransactionInput,
 } from "./transaction"
 
-// Presupuesto
+// Budget
 export type {
   BudgetFrequency,
   BudgetCategory,
   BudgetItem,
   CreateBudgetItemInput,
-  IngresoFijo,
-  GastoFijo,
+  FixedIncome,
+  FixedExpense,
 } from "./budget"
 
-// Inversiones
+// Investments
 export type {
   InvestmentType,
   InvestmentStatus,

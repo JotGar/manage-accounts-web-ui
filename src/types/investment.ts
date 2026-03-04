@@ -3,7 +3,7 @@
  * Tipos para inversiones y ajustes
  */
 
-import { Currency } from "./producto"
+import { Currency } from "./products"
 
 export type InvestmentType =
   | "Acciones"

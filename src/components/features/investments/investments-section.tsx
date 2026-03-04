@@ -32,7 +32,7 @@ interface InvestmentsSectionProps {
   onAddInversion: (inversion: any) => void
   onDeleteInversion: (id: number) => void
   onAdjustInversion: (id: number, newAmount: number, reason: string) => void
-  formatCurrency: (amount: number, currency: string) => string
+  formatCurrency: (amount: number, currency?: string) => string
   totalInvertido: number
   totalActual: number
   totalGanancias: number

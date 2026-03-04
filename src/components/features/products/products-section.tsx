@@ -27,7 +27,7 @@ interface ProductsSectionProps {
   onAddProduct: (product: any) => void
   onDeleteProduct: (id: number) => void
   onUpdateProduct: (id: number, updates: any) => void
-  formatCurrency: (amount: number, currency: string) => string
+  formatCurrency: (amount: number, currency?: string) => string
   darkMode?: boolean
 }
 

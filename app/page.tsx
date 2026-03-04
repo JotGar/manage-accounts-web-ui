@@ -26,9 +26,13 @@ import { cn, formatCurrency } from "@/src/lib/utils"
 
 // Calculations
 import {
-  calculateTotalBalance, calculateTotalIngresos, calculateTotalGastos,
-  calculateEstimadoFinMes, calculateTotalInvertido, calculateTotalActual,
-  calculateTotalGanancias,
+  calculateTotalBalance,
+  calculateTotalIncomes,
+  calculateTotalExpenses,
+  calculateEstimatedEndOfMonth,
+  calculateTotalInvested,
+  calculateTotalCurrent,
+  calculateTotalProfit,
 } from "@/src/lib/calculations"
 
 // Configuración de características - Controla qué secciones son visibles
@@ -55,24 +59,33 @@ export default function FinanceApp() {
   const [showAddTransaction, setShowAddTransaction] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  // Data State - Usando hooks con localStorage
+  // Data State - Using hooks with localStorage
+  // Note: Using Spanish aliases for props to match feature components
   const { products: productos, addProduct, updateProduct: updateProductFn, deleteProduct } = useProducts()
   const { transactions: transacciones, addTransaction, deleteTransaction } = useTransactions()
-  const { ingresosFijos, gastosFijos, addIngreso, deleteIngreso, addGasto, deleteGasto } = useBudget()
-  const { inversiones, addInversion, deleteInversion, adjustInversion } = useInvestments()
+  const { fixedIncomes: ingresosFijos, fixedExpenses: gastosFijos, addIncome: addIngreso, deleteIncome: deleteIngreso, addExpense: addGasto, deleteExpense: deleteGasto } = useBudget()
+  const { investments: inversiones, addInvestment: addInversion, deleteInvestment: deleteInversion, adjustInvestment: adjustInversion } = useInvestments()
 
   // ============================================================================
   // CALCULATIONS (using lib/calculations.ts)
   // ============================================================================
 
   const totalBalance = calculateTotalBalance(productos)
-  const totalIngresos = calculateTotalIngresos(ingresosFijos)
-  const totalGastos = calculateTotalGastos(gastosFijos)
-  const estimadoFinMes = calculateEstimadoFinMes(totalIngresos, totalGastos)
+  const totalIncomes = calculateTotalIncomes(ingresosFijos)
+  const totalExpenses = calculateTotalExpenses(gastosFijos)
+  const estimatedEndOfMonth = calculateEstimatedEndOfMonth(totalIncomes, totalExpenses)
 
-  const totalInvertido = calculateTotalInvertido(inversiones)
-  const totalActual = calculateTotalActual(inversiones)
-  const totalGanancias = calculateTotalGanancias(totalActual, totalInvertido)
+  const totalInvested = calculateTotalInvested(inversiones)
+  const totalCurrent = calculateTotalCurrent(inversiones)
+  const totalProfit = calculateTotalProfit(totalCurrent, totalInvested)
+
+  // Spanish aliases for component props
+  const totalIngresos = totalIncomes
+  const totalGastos = totalExpenses
+  const estimadoFinMes = estimatedEndOfMonth
+  const totalInvertido = totalInvested
+  const totalActual = totalCurrent
+  const totalGanancias = totalProfit
 
   // ============================================================================
   // EVENT HANDLERS

@@ -1,32 +1,32 @@
 // Budget Service
-// Lógica de negocio para presupuesto (ingresos fijos y gastos fijos) - usa localStorage
+// Business logic for budget (fixed incomes and expenses) - uses localStorage
 
 import { STORAGE_KEYS } from "@/src/constants/storage-keys"
 import { getLocalStorage, setLocalStorage } from "@/src/lib/storage"
-import type { IngresoFijo, GastoFijo, CreateBudgetItemInput } from "@/src/types/budget"
+import type { FixedIncome, FixedExpense, CreateBudgetItemInput } from "@/src/types/budget"
 
 // ============================================================================
-// INGRESOS FIJOS
+// FIXED INCOMES
 // ============================================================================
 
-const getStoredIngresos = (): IngresoFijo[] => {
-  return getLocalStorage<IngresoFijo[]>(STORAGE_KEYS.INGRESOS_FIJOS, [])
+const getStoredIncomes = (): FixedIncome[] => {
+  return getLocalStorage<FixedIncome[]>(STORAGE_KEYS.FIXED_INCOMES, [])
 }
 
-const saveIngresos = (ingresos: IngresoFijo[]): void => {
-  setLocalStorage(STORAGE_KEYS.INGRESOS_FIJOS, ingresos)
+const saveIncomes = (incomes: FixedIncome[]): void => {
+  setLocalStorage(STORAGE_KEYS.FIXED_INCOMES, incomes)
 }
 
 // ============================================================================
-// GASTOS FIJOS
+// FIXED EXPENSES
 // ============================================================================
 
-const getStoredGastos = (): GastoFijo[] => {
-  return getLocalStorage<GastoFijo[]>(STORAGE_KEYS.GASTOS_FIJOS, [])
+const getStoredExpenses = (): FixedExpense[] => {
+  return getLocalStorage<FixedExpense[]>(STORAGE_KEYS.FIXED_EXPENSES, [])
 }
 
-const saveGastos = (gastos: GastoFijo[]): void => {
-  setLocalStorage(STORAGE_KEYS.GASTOS_FIJOS, gastos)
+const saveExpenses = (expenses: FixedExpense[]): void => {
+  setLocalStorage(STORAGE_KEYS.FIXED_EXPENSES, expenses)
 }
 
 // ============================================================================
@@ -34,84 +34,84 @@ const saveGastos = (gastos: GastoFijo[]): void => {
 // ============================================================================
 
 export const budgetService = {
-  // -------------------- INGRESOS --------------------
+  // -------------------- INCOMES --------------------
 
   /**
-   * Obtener todos los ingresos fijos
+   * Get all fixed incomes
    */
-  getIngresos: (): IngresoFijo[] => {
-    return getStoredIngresos()
+  getIncomes: (): FixedIncome[] => {
+    return getStoredIncomes()
   },
 
   /**
-   * Crear un nuevo ingreso fijo
+   * Create a new fixed income
    */
-  createIngreso: (input: CreateBudgetItemInput): IngresoFijo => {
-    const ingresos = getStoredIngresos()
+  createIncome: (input: CreateBudgetItemInput): FixedIncome => {
+    const incomes = getStoredIncomes()
     
-    const newIngreso: IngresoFijo = {
+    const newIncome: FixedIncome = {
       ...input,
-      id: Math.max(0, ...ingresos.map((i) => i.id)) + 1,
+      id: Math.max(0, ...incomes.map((i) => i.id)) + 1,
     }
 
-    const updatedIngresos = [...ingresos, newIngreso]
-    saveIngresos(updatedIngresos)
+    const updatedIncomes = [...incomes, newIncome]
+    saveIncomes(updatedIncomes)
     
-    return newIngreso
+    return newIncome
   },
 
   /**
-   * Eliminar un ingreso fijo
+   * Delete a fixed income
    */
-  deleteIngreso: (id: number): boolean => {
-    const ingresos = getStoredIngresos()
-    const index = ingresos.findIndex((i) => i.id === id)
+  deleteIncome: (id: number): boolean => {
+    const incomes = getStoredIncomes()
+    const index = incomes.findIndex((i) => i.id === id)
     
     if (index === -1) return false
 
-    const updatedIngresos = ingresos.filter((i) => i.id !== id)
-    saveIngresos(updatedIngresos)
+    const updatedIncomes = incomes.filter((i) => i.id !== id)
+    saveIncomes(updatedIncomes)
     
     return true
   },
 
-  // -------------------- GASTOS --------------------
+  // -------------------- EXPENSES --------------------
 
   /**
-   * Obtener todos los gastos fijos
+   * Get all fixed expenses
    */
-  getGastos: (): GastoFijo[] => {
-    return getStoredGastos()
+  getExpenses: (): FixedExpense[] => {
+    return getStoredExpenses()
   },
 
   /**
-   * Crear un nuevo gasto fijo
+   * Create a new fixed expense
    */
-  createGasto: (input: CreateBudgetItemInput): GastoFijo => {
-    const gastos = getStoredGastos()
+  createExpense: (input: CreateBudgetItemInput): FixedExpense => {
+    const expenses = getStoredExpenses()
     
-    const newGasto: GastoFijo = {
+    const newExpense: FixedExpense = {
       ...input,
-      id: Math.max(0, ...gastos.map((g) => g.id)) + 1,
+      id: Math.max(0, ...expenses.map((g) => g.id)) + 1,
     }
 
-    const updatedGastos = [...gastos, newGasto]
-    saveGastos(updatedGastos)
+    const updatedExpenses = [...expenses, newExpense]
+    saveExpenses(updatedExpenses)
     
-    return newGasto
+    return newExpense
   },
 
   /**
-   * Eliminar un gasto fijo
+   * Delete a fixed expense
    */
-  deleteGasto: (id: number): boolean => {
-    const gastos = getStoredGastos()
-    const index = gastos.findIndex((g) => g.id === id)
+  deleteExpense: (id: number): boolean => {
+    const expenses = getStoredExpenses()
+    const index = expenses.findIndex((g) => g.id === id)
     
     if (index === -1) return false
 
-    const updatedGastos = gastos.filter((g) => g.id !== id)
-    saveGastos(updatedGastos)
+    const updatedExpenses = expenses.filter((g) => g.id !== id)
+    saveExpenses(updatedExpenses)
     
     return true
   },

@@ -3,21 +3,20 @@
 
 import { STORAGE_KEYS } from "@/src/constants/storage-keys"
 import { getLocalStorage, setLocalStorage } from "@/src/lib/storage"
-import { mockProducts } from "@/src/data"
-import type { Producto, CreateProductInput, UpdateProductInput } from "@/src/types/producto"
+import type { Product, CreateProductInput, UpdateProductInput } from "@/src/types/products"
 
 /**
  * Obtiene todos los productos desde localStorage o usa datos mock como fallback
  */
-const getStoredProducts = (): Producto[] => {
-  return getLocalStorage<Producto[]>(STORAGE_KEYS.PRODUCTOS, [])
+const getStoredProducts = (): Product[] => {
+  return getLocalStorage<Product[]>(STORAGE_KEYS.PRODUCTS, [])
 }
 
 /**
  * Guarda productos en localStorage
  */
-const saveProducts = (products: Producto[]): void => {
-  setLocalStorage(STORAGE_KEYS.PRODUCTOS, products)
+const saveProducts = (products: Product[]): void => {
+  setLocalStorage(STORAGE_KEYS.PRODUCTS, products)
 }
 
 const BALANCE = "Saldo"
@@ -26,14 +25,14 @@ export const productsService = {
   /**
    * Obtener todos los productos
    */
-  getAll: (): Producto[] => {
+  getAll: (): Product[] => {
     return getStoredProducts()
   },
 
   /**
    * Obtener un producto por ID
    */
-  getById: (id: number): Producto | undefined => {
+  getById: (id: number): Product | undefined => {
     const products = getStoredProducts()
     return products.find((p) => p.id === id)
   },
@@ -41,10 +40,10 @@ export const productsService = {
   /**
    * Crear un nuevo producto
    */
-  create: (input: CreateProductInput): Producto => {
+  create: (input: CreateProductInput): Product => {
     const products = getStoredProducts()
     
-    const newProduct: Producto = {
+    const newProduct: Product = {
       ...input,
       id: Math.max(0, ...products.map((p) => p.id)) + 1,
       status: BALANCE,
@@ -60,7 +59,7 @@ export const productsService = {
   /**
    * Actualizar un producto existente
    */
-  update: (id: number, input: UpdateProductInput): Producto | undefined => {
+  update: (id: number, input: UpdateProductInput): Product | undefined => {
     const products = getStoredProducts()
     const index = products.findIndex((p) => p.id === id)
     

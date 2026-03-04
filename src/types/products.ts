@@ -1,28 +1,28 @@
-// types/producto.ts
+// types/products.ts
 /**
- * Tipos para productos financieros (cuentas, tarjetas, billeteras)
+ * Types for financial products (accounts, cards, wallets)
  */
 
 export type Currency = "COP" | "USD" | "EUR" | "GBP" | "JPY"
 
 export type ProductType = 
-  | "Cuenta de Ahorros"
-  | "Cuenta Corriente"
-  | "Billetera Digital"
-  | "Tarjeta de Crédito"
-  | "Cuenta de Inversión"
-  | "Efectivo"
+  | "Savings Account"
+  | "Checking Account"
+  | "Digital Wallet"
+  | "Credit Card"
+  | "Investment Account"
+  | "Cash"
 
-export interface Producto {
+export interface Product {
   id: number
   name: string
-  type: string // Descripción del tipo (ej: "Pesos colombianos", "Euro")
-  code: string // Código o referencia (ej: "3914 COP • 1 USD")
+  type: string // Type description (e.g., "Pesos colombianos", "Euro")
+  code: string // Code or reference (e.g., "3914 COP • 1 USD")
   balance: number
-  status: string // Estado del producto (ej: "Saldo", "Deuda")
+  status: string // Product status (e.g., "Balance", "Debt")
   currency: Currency
   productType: ProductType
-  includeInTotal: boolean // Si se incluye en el cálculo del total general
+  includeInTotal: boolean // Whether to include in total calculation
 }
 
 export interface CreateProductInput {
