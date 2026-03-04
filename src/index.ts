@@ -1,4 +1,5 @@
-import { incomeService } from './services/incomeService';
+import { incomeService } from "./services/incomes";
+
 
 const main = () => {
   console.log(incomeService.getAll());

@@ -9,14 +9,14 @@ import type { Investment, CreateInvestmentInput, InvestmentAdjustment } from "@/
  * Obtiene las inversiones desde localStorage
  */
 const getStoredInvestments = (): Investment[] => {
-  return getLocalStorage<Investment[]>(STORAGE_KEYS.INVERSIONES, [])
+  return getLocalStorage<Investment[]>(STORAGE_KEYS.INVESTMENTS, [])
 }
 
 /**
  * Guarda las inversiones en localStorage
  */
 const saveInvestments = (investments: Investment[]): void => {
-  setLocalStorage(STORAGE_KEYS.INVERSIONES, investments)
+  setLocalStorage(STORAGE_KEYS.INVESTMENTS, investments)
 }
 
 export const investmentsService = {

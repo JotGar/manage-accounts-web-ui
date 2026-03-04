@@ -1,40 +1,40 @@
 // types/budget.ts
 /**
- * Tipos para presupuesto (ingresos fijos y gastos fijos)
+ * Types for budget (fixed incomes and expenses)
  */
 
-import { Currency } from "./producto"
+import { Currency } from "./products"
 
 export type BudgetFrequency = 
-  | "Diario"
-  | "Semanal"
-  | "Quincenal"
-  | "Mensual"
-  | "Bimestral"
-  | "Trimestral"
-  | "Semestral"
-  | "Anual"
+  | "Daily"
+  | "Weekly"
+  | "Biweekly"
+  | "Monthly"
+  | "Bimonthly"
+  | "Quarterly"
+  | "Semi-annually"
+  | "Annually"
 
 export type BudgetCategory =
-  // Categorías de Ingresos
-  | "Salario"
-  | "Trabajo Independiente"
-  | "Bonificaciones"
-  | "Inversiones"
-  | "Alquileres"
-  | "Otros Ingresos"
-  // Categorías de Gastos
-  | "Vivienda"
-  | "Servicios"
-  | "Alimentación"
-  | "Transporte"
-  | "Salud"
-  | "Educación"
-  | "Seguros"
-  | "Deudas"
-  | "Entretenimiento"
-  | "Ahorro"
-  | "Otros Gastos"
+  // Income Categories
+  | "Salary"
+  | "Freelance"
+  | "Bonuses"
+  | "Investments"
+  | "Rentals"
+  | "Other Income"
+  // Expense Categories
+  | "Housing"
+  | "Utilities"
+  | "Food"
+  | "Transportation"
+  | "Health"
+  | "Education"
+  | "Insurance"
+  | "Debt"
+  | "Entertainment"
+  | "Savings"
+  | "Other Expenses"
 
 export interface BudgetItem {
   id: number
@@ -53,6 +53,6 @@ export interface CreateBudgetItemInput {
   frequency: BudgetFrequency
 }
 
-// Tipos específicos para mayor claridad
-export type IngresoFijo = BudgetItem
-export type GastoFijo = BudgetItem
+// Type aliases for clarity
+export type FixedIncome = BudgetItem
+export type FixedExpense = BudgetItem

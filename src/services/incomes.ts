@@ -1,19 +1,24 @@
-import { initialIngresos } from '@/src/data/mock-ingresos';
 import type { Income, CreateIncomeInput } from '@/src/types';
+import { STORAGE_KEYS } from '../constants/storage-keys';
+import { getLocalStorage } from '../lib/storage';
 
-// TODO: Implementar cuando tengas backend real
-// Por ahora usa los datos mock
+const getStoredProducts = (): Income[] => {
+  return getLocalStorage<Income[]>(STORAGE_KEYS.FIXED_INCOMES, [])
+}
 
 export const incomeService = {
   getAll: (): Income[] => {
-    return initialIngresos;
+    return getStoredProducts();
   },
 
   getById: (id: number): Income | undefined => {
-    return initialIngresos.find((i) => i.id === id);
+    const incomes = getStoredProducts();
+    return incomes.find((i) => i.id === id);
   },
 
   create: (input: CreateIncomeInput): Income => {
+    const initialIngresos = getStoredProducts();
+
     const newIncome: Income = {
       ...input,
       id: Math.max(0, ...initialIngresos.map((i) => i.id)) + 1,
@@ -22,6 +27,8 @@ export const incomeService = {
   },
 
   delete: (id: number): boolean => {
+    const initialIngresos = getStoredProducts();
+
     const index = initialIngresos.findIndex((i) => i.id === id);
     if (index === -1) return false;
     return true;

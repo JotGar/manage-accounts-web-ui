@@ -1,7 +1,7 @@
 // Hooks Index
-// Exporta todos los hooks personalizados
+// Export all custom hooks
 
-export { useProducts } from "./useProducts"
-export { useTransactions } from "./useTransactions"
+export { useProducts } from "./use-products"
+export { useTransactions } from "./use-transactions"
 export { useBudget } from "./useBudget"
 export { useInvestments } from "./useInvestments"

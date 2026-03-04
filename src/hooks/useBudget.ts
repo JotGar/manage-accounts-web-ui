@@ -1,39 +1,39 @@
 // useBudget Hook
-// Hook personalizado para gestionar presupuesto con estado de React
+// Custom hook for managing budget with React state
 
 import { useState, useEffect, useCallback } from "react"
 import { budgetService } from "@/src/services/budget"
-import type { IngresoFijo, GastoFijo, CreateBudgetItemInput } from "@/src/types/budget"
+import type { FixedIncome, FixedExpense, CreateBudgetItemInput } from "@/src/types/budget"
 
 interface UseBudgetReturn {
-  ingresosFijos: IngresoFijo[]
-  gastosFijos: GastoFijo[]
+  fixedIncomes: FixedIncome[]
+  fixedExpenses: FixedExpense[]
   isLoading: boolean
   error: string | null
-  addIngreso: (input: CreateBudgetItemInput) => void
-  deleteIngreso: (id: number) => void
-  addGasto: (input: CreateBudgetItemInput) => void
-  deleteGasto: (id: number) => void
+  addIncome: (input: CreateBudgetItemInput) => void
+  deleteIncome: (id: number) => void
+  addExpense: (input: CreateBudgetItemInput) => void
+  deleteExpense: (id: number) => void
   refreshBudget: () => void
 }
 
 export const useBudget = (): UseBudgetReturn => {
-  const [ingresosFijos, setIngresosFijos] = useState<IngresoFijo[]>([])
-  const [gastosFijos, setGastosFijos] = useState<GastoFijo[]>([])
+  const [fixedIncomes, setFixedIncomes] = useState<FixedIncome[]>([])
+  const [fixedExpenses, setFixedExpenses] = useState<FixedExpense[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Cargar datos inicialmente
+  // Load data initially
   const refreshBudget = useCallback(() => {
     try {
       setIsLoading(true)
       setError(null)
-      const ingresos = budgetService.getIngresos()
-      const gastos = budgetService.getGastos()
-      setIngresosFijos(ingresos)
-      setGastosFijos(gastos)
+      const incomes = budgetService.getIncomes()
+      const expenses = budgetService.getExpenses()
+      setFixedIncomes(incomes)
+      setFixedExpenses(expenses)
     } catch (err) {
-      setError("Error al cargar presupuesto")
+      setError("Error loading budget")
       console.error(err)
     } finally {
       setIsLoading(false)
@@ -44,67 +44,67 @@ export const useBudget = (): UseBudgetReturn => {
     refreshBudget()
   }, [refreshBudget])
 
-  // Agregar ingreso
-  const addIngreso = useCallback((input: CreateBudgetItemInput) => {
+  // Add income
+  const addIncome = useCallback((input: CreateBudgetItemInput) => {
     try {
       setError(null)
-      const newIngreso = budgetService.createIngreso(input)
-      setIngresosFijos((prev) => [...prev, newIngreso])
+      const newIncome = budgetService.createIncome(input)
+      setFixedIncomes((prev) => [...prev, newIncome])
     } catch (err) {
-      setError("Error al crear ingreso")
+      setError("Error creating income")
       console.error(err)
     }
   }, [])
 
-  // Eliminar ingreso
-  const deleteIngreso = useCallback((id: number) => {
+  // Delete income
+  const deleteIncome = useCallback((id: number) => {
     try {
       setError(null)
-      const success = budgetService.deleteIngreso(id)
+      const success = budgetService.deleteIncome(id)
       if (success) {
-        setIngresosFijos((prev) => prev.filter((i) => i.id !== id))
+        setFixedIncomes((prev) => prev.filter((i) => i.id !== id))
       }
     } catch (err) {
-      setError("Error al eliminar ingreso")
+      setError("Error deleting income")
       console.error(err)
     }
   }, [])
 
-  // Agregar gasto
-  const addGasto = useCallback((input: CreateBudgetItemInput) => {
+  // Add expense
+  const addExpense = useCallback((input: CreateBudgetItemInput) => {
     try {
       setError(null)
-      const newGasto = budgetService.createGasto(input)
-      setGastosFijos((prev) => [...prev, newGasto])
+      const newExpense = budgetService.createExpense(input)
+      setFixedExpenses((prev) => [...prev, newExpense])
     } catch (err) {
-      setError("Error al crear gasto")
+      setError("Error creating expense")
       console.error(err)
     }
   }, [])
 
-  // Eliminar gasto
-  const deleteGasto = useCallback((id: number) => {
+  // Delete expense
+  const deleteExpense = useCallback((id: number) => {
     try {
       setError(null)
-      const success = budgetService.deleteGasto(id)
+      const success = budgetService.deleteExpense(id)
       if (success) {
-        setGastosFijos((prev) => prev.filter((g) => g.id !== id))
+        setFixedExpenses((prev) => prev.filter((g) => g.id !== id))
       }
     } catch (err) {
-      setError("Error al eliminar gasto")
+      setError("Error deleting expense")
       console.error(err)
     }
   }, [])
 
   return {
-    ingresosFijos,
-    gastosFijos,
+    fixedIncomes,
+    fixedExpenses,
     isLoading,
     error,
-    addIngreso,
-    deleteIngreso,
-    addGasto,
-    deleteGasto,
+    addIncome,
+    deleteIncome,
+    addExpense,
+    deleteExpense,
     refreshBudget,
   }
 }

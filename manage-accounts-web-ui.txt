@@ -1,0 +1,150 @@
+.
+├── app
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── archivo.txt
+├── components.json
+├── generate-proyect-tree.sh
+├── manage-accounts-web-ui.txt
+├── next-env.d.ts
+├── next.config.mjs
+├── package-lock.json
+├── package.json
+├── pnpm-lock.yaml
+├── postcss.config.mjs
+├── public
+│   ├── placeholder-logo.png
+│   ├── placeholder-logo.svg
+│   ├── placeholder-user.jpg
+│   ├── placeholder.jpg
+│   └── placeholder.svg
+├── README.md
+├── src
+│   ├── components
+│   │   ├── features
+│   │   │   ├── budgets
+│   │   │   │   ├── budget-form.tsx
+│   │   │   │   └── budget-section.tsx
+│   │   │   ├── dashboard
+│   │   │   │   ├── balance-card.tsx
+│   │   │   │   └── expense-chart.tsx
+│   │   │   ├── investments
+│   │   │   │   ├── investment-form.tsx
+│   │   │   │   └── investments-section.tsx
+│   │   │   ├── products
+│   │   │   │   ├── product-edit-form.tsx
+│   │   │   │   ├── product-form.tsx
+│   │   │   │   └── products-section.tsx
+│   │   │   ├── settings
+│   │   │   │   └── configuration-section.tsx
+│   │   │   └── transactions
+│   │   │       ├── adjustment-form.tsx
+│   │   │       ├── transaction-charts.tsx
+│   │   │       ├── transaction-form.tsx
+│   │   │       ├── transaction-list.tsx
+│   │   │       ├── transactions-section.tsx
+│   │   │       └── transfer-form.tsx
+│   │   ├── layout
+│   │   │   ├── AppLayout.tsx
+│   │   │   ├── sidebar-items.ts
+│   │   │   └── Sidebar.tsx
+│   │   ├── shared
+│   │   │   ├── items-list-card.tsx
+│   │   │   ├── theme-provider.tsx
+│   │   │   └── theme-wrapper.tsx
+│   │   └── ui
+│   │       ├── accordion.tsx
+│   │       ├── alert-dialog.tsx
+│   │       ├── alert.tsx
+│   │       ├── aspect-ratio.tsx
+│   │       ├── avatar.tsx
+│   │       ├── badge.tsx
+│   │       ├── breadcrumb.tsx
+│   │       ├── button.tsx
+│   │       ├── calendar.tsx
+│   │       ├── card.tsx
+│   │       ├── carousel.tsx
+│   │       ├── chart.tsx
+│   │       ├── checkbox.tsx
+│   │       ├── collapsible.tsx
+│   │       ├── command.tsx
+│   │       ├── context-menu.tsx
+│   │       ├── dialog.tsx
+│   │       ├── drawer.tsx
+│   │       ├── dropdown-menu.tsx
+│   │       ├── form.tsx
+│   │       ├── hover-card.tsx
+│   │       ├── input-otp.tsx
+│   │       ├── input.tsx
+│   │       ├── label.tsx
+│   │       ├── menubar.tsx
+│   │       ├── navigation-menu.tsx
+│   │       ├── pagination.tsx
+│   │       ├── popover.tsx
+│   │       ├── progress.tsx
+│   │       ├── radio-group.tsx
+│   │       ├── resizable.tsx
+│   │       ├── scroll-area.tsx
+│   │       ├── select.tsx
+│   │       ├── separator.tsx
+│   │       ├── sheet.tsx
+│   │       ├── sidebar.tsx
+│   │       ├── skeleton.tsx
+│   │       ├── slider.tsx
+│   │       ├── sonner.tsx
+│   │       ├── switch.tsx
+│   │       ├── table.tsx
+│   │       ├── tabs.tsx
+│   │       ├── textarea.tsx
+│   │       ├── toast.tsx
+│   │       ├── toaster.tsx
+│   │       ├── toggle-group.tsx
+│   │       ├── toggle.tsx
+│   │       ├── tooltip.tsx
+│   │       ├── use-mobile.tsx
+│   │       └── use-toast.ts
+│   ├── config
+│   │   └── features.ts
+│   ├── constants
+│   │   └── storage-keys.ts
+│   ├── data
+│   │   ├── index.ts
+│   │   ├── mock-budget.ts
+│   │   ├── mock-income.ts
+│   │   ├── mock-investments.ts
+│   │   ├── mock-products.ts
+│   │   └── mock-transactions.ts
+│   ├── hooks
+│   │   ├── index.ts
+│   │   ├── use-mobile.tsx
+│   │   ├── use-toast.ts
+│   │   ├── useBudget.ts
+│   │   ├── useInvestments.ts
+│   │   ├── useProducts.ts
+│   │   └── useTransactions.ts
+│   ├── index.ts
+│   ├── lib
+│   │   ├── calculations.ts
+│   │   ├── storage.ts
+│   │   └── utils.ts
+│   ├── services
+│   │   ├── budget.ts
+│   │   ├── incomes.ts
+│   │   ├── index.ts
+│   │   ├── investments.ts
+│   │   ├── products.ts
+│   │   └── transactions.ts
+│   ├── types
+│   │   ├── budget.ts
+│   │   ├── index.ts
+│   │   ├── investment.ts
+│   │   ├── producto.ts
+│   │   └── transaction.ts
+│   └── types.ts
+├── styles
+│   └── globals.css
+├── tailwind.config.ts
+└── tsconfig.json
+
+23 directories, 125 files

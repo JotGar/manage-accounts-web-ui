@@ -1,7 +1,7 @@
 // data/mock-products.ts
-import { Producto } from "../types/producto"
+import { Product } from "../types/products"
 
-export const mockProducts: Producto[] = [
+export const mockProducts: Product[] = [
   {
     id: 1,
     name: "Cuenta de Ahorros",
@@ -10,7 +10,7 @@ export const mockProducts: Producto[] = [
     balance: 2000000,
     status: "Saldo",
     currency: "COP",
-    productType: "Cuenta de Ahorros",
+    productType: "Savings Account",
     includeInTotal: true,
   },
   {
@@ -21,7 +21,7 @@ export const mockProducts: Producto[] = [
     balance: 200000,
     status: "Saldo",
     currency: "COP",
-    productType: "Billetera Digital",
+    productType: "Digital Wallet",
     includeInTotal: true,
   },
   {
@@ -32,7 +32,7 @@ export const mockProducts: Producto[] = [
     balance: 35.97,
     status: "Saldo",
     currency: "EUR",
-    productType: "Billetera Digital",
+    productType: "Digital Wallet",
     includeInTotal: false,
   },
   {
@@ -43,7 +43,7 @@ export const mockProducts: Producto[] = [
     balance: 5000000,
     status: "Saldo",
     currency: "COP",
-    productType: "Cuenta de Inversión",
+    productType: "Investment Account",
     includeInTotal: false,
   },
 ]

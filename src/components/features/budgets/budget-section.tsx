@@ -22,7 +22,7 @@ interface BudgetSectionProps {
   onDeleteIngreso: (id: number) => void
   onAddGasto: (gasto: any) => void
   onDeleteGasto: (id: number) => void
-  formatCurrency: (amount: number, currency: string) => string
+  formatCurrency: (amount: number, currency?: string) => string
   totalIngresos: number
   totalGastos: number
   estimadoFinMes: number

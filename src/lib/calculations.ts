@@ -1,81 +1,81 @@
 // lib/calculations.ts
 /**
- * Funciones de cálculo para productos financieros, presupuesto e inversiones
+ * Calculation functions for financial products, budget and investments
  */
 
-import type { Producto } from "@/src/types/producto"
-import type { IngresoFijo, GastoFijo } from "@/src/types/budget"
+import type { Product } from "@/src/types/products"
+import type { FixedIncome, FixedExpense } from "@/src/types/budget"
 import type { Investment } from "@/src/types/investment"
 
 // ============================================================================
-// CÁLCULOS DE PRODUCTOS
+// PRODUCT CALCULATIONS
 // ============================================================================
 
 /**
- * Calcula el saldo total de productos financieros (solo los marcados como includeInTotal y en COP)
+ * Calculate total balance of financial products (only those marked as includeInTotal and in COP)
  */
-export function calculateTotalBalance(productos: Producto[]): number {
-  return productos
-    .filter((producto) => producto.includeInTotal && producto.currency === "COP")
-    .reduce((total, producto) => total + producto.balance, 0)
+export function calculateTotalBalance(products: Product[]): number {
+  return products
+    .filter((product) => product.includeInTotal && product.currency === "COP")
+    .reduce((total, product) => total + product.balance, 0)
 }
 
 // ============================================================================
-// CÁLCULOS DE PRESUPUESTO
+// BUDGET CALCULATIONS
 // ============================================================================
 
 /**
- * Calcula el total de ingresos fijos
+ * Calculate total of fixed incomes
  */
-export function calculateTotalIngresos(ingresosFijos: IngresoFijo[]): number {
-  return ingresosFijos.reduce((sum, ingreso) => sum + ingreso.amount, 0)
+export function calculateTotalIncomes(fixedIncomes: FixedIncome[]): number {
+  return fixedIncomes.reduce((sum, income) => sum + income.amount, 0)
 }
 
 /**
- * Calcula el total de gastos fijos
+ * Calculate total of fixed expenses
  */
-export function calculateTotalGastos(gastosFijos: GastoFijo[]): number {
-  return gastosFijos.reduce((sum, gasto) => sum + gasto.amount, 0)
+export function calculateTotalExpenses(fixedExpenses: FixedExpense[]): number {
+  return fixedExpenses.reduce((sum, expense) => sum + expense.amount, 0)
 }
 
 /**
- * Calcula el estimado de dinero disponible al final del mes
- * (Ingresos - Gastos)
+ * Calculate estimated money available at end of month
+ * (Incomes - Expenses)
  */
-export function calculateEstimadoFinMes(totalIngresos: number, totalGastos: number): number {
-  return totalIngresos - totalGastos
+export function calculateEstimatedEndOfMonth(totalIncomes: number, totalExpenses: number): number {
+  return totalIncomes - totalExpenses
 }
 
 // ============================================================================
-// CÁLCULOS DE INVERSIONES
+// INVESTMENT CALCULATIONS
 // ============================================================================
 
 /**
- * Calcula el total invertido (suma de initialAmount de todas las inversiones)
+ * Calculate total invested (sum of initialAmount of all investments)
  */
-export function calculateTotalInvertido(inversiones: Investment[]): number {
-  return inversiones.reduce((sum, inv) => sum + inv.initialAmount, 0)
+export function calculateTotalInvested(investments: Investment[]): number {
+  return investments.reduce((sum, inv) => sum + inv.initialAmount, 0)
 }
 
 /**
- * Calcula el valor actual total de las inversiones
+ * Calculate current total value of investments
  */
-export function calculateTotalActual(inversiones: Investment[]): number {
-  return inversiones.reduce((sum, inv) => sum + inv.currentAmount, 0)
+export function calculateTotalCurrent(investments: Investment[]): number {
+  return investments.reduce((sum, inv) => sum + inv.currentAmount, 0)
 }
 
 /**
- * Calcula las ganancias/pérdidas totales de las inversiones
- * (Valor Actual - Total Invertido)
+ * Calculate total profit/loss of investments
+ * (Current Value - Total Invested)
  */
-export function calculateTotalGanancias(totalActual: number, totalInvertido: number): number {
-  return totalActual - totalInvertido
+export function calculateTotalProfit(totalCurrent: number, totalInvested: number): number {
+  return totalCurrent - totalInvested
 }
 
 /**
- * Calcula el porcentaje de rentabilidad de las inversiones
+ * Calculate percentage return of investments
  */
-export function calculateRentabilidad(totalGanancias: number, totalInvertido: number): number {
-  if (totalInvertido === 0) return 0
-  return (totalGanancias / totalInvertido) * 100
+export function calculateReturnPercentage(totalProfit: number, totalInvested: number): number {
+  if (totalInvested === 0) return 0
+  return (totalProfit / totalInvested) * 100
 }

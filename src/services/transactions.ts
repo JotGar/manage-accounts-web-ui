@@ -9,14 +9,14 @@ import type { Transaction, CreateTransactionInput } from "@/src/types/transactio
  * Obtiene todas las transacciones desde localStorage o usa datos mock como fallback
  */
 const getStoredTransactions = (): Transaction[] => {
-  return getLocalStorage<Transaction[]>(STORAGE_KEYS.TRANSACCIONES, [])
+  return getLocalStorage<Transaction[]>(STORAGE_KEYS.TRANSACTIONS, [])
 }
 
 /**
  * Guarda transacciones en localStorage
  */
 const saveTransactions = (transactions: Transaction[]): void => {
-  setLocalStorage(STORAGE_KEYS.TRANSACCIONES, transactions)
+  setLocalStorage(STORAGE_KEYS.TRANSACTIONS, transactions)
 }
 
 export const transactionsService = {

@@ -3,10 +3,10 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { productsService } from "@/src/services/products"
-import type { Producto, CreateProductInput } from "@/src/types/producto"
+import type { Product, CreateProductInput } from "@/src/types/products"
 
 interface UseProductsReturn {
-  products: Producto[]
+  products: Product[]
   isLoading: boolean
   error: string | null
   addProduct: (product: CreateProductInput) => void
@@ -16,7 +16,7 @@ interface UseProductsReturn {
 }
 
 export const useProducts = (): UseProductsReturn => {
-  const [products, setProducts] = useState<Producto[]>([])
+  const [products, setProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 

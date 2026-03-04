@@ -3,7 +3,7 @@
  * Tipos para transacciones (ingresos, gastos, transferencias)
  */
 
-import { Currency } from "./producto"
+import { Currency } from "./products"
 
 export type TransactionType = "income" | "expense" | "transfer"
 

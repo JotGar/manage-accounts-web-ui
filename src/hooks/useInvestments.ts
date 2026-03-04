@@ -1,34 +1,34 @@
 // useInvestments Hook
-// Hook personalizado para gestionar inversiones con estado de React
+// Custom hook for managing investments with React state
 
 import { useState, useEffect, useCallback } from "react"
 import { investmentsService } from "@/src/services/investments"
 import type { Investment, CreateInvestmentInput } from "@/src/types/investment"
 
 interface UseInvestmentsReturn {
-  inversiones: Investment[]
+  investments: Investment[]
   isLoading: boolean
   error: string | null
-  addInversion: (input: CreateInvestmentInput) => void
-  deleteInversion: (id: number) => void
-  adjustInversion: (id: number, newAmount: number, reason: string) => void
+  addInvestment: (input: CreateInvestmentInput) => void
+  deleteInvestment: (id: number) => void
+  adjustInvestment: (id: number, newAmount: number, reason: string) => void
   refreshInvestments: () => void
 }
 
 export const useInvestments = (): UseInvestmentsReturn => {
-  const [inversiones, setInversiones] = useState<Investment[]>([])
+  const [investments, setInvestments] = useState<Investment[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Cargar inversiones inicialmente
+  // Load investments initially
   const refreshInvestments = useCallback(() => {
     try {
       setIsLoading(true)
       setError(null)
       const data = investmentsService.getAll()
-      setInversiones(data)
+      setInvestments(data)
     } catch (err) {
-      setError("Error al cargar inversiones")
+      setError("Error loading investments")
       console.error(err)
     } finally {
       setIsLoading(false)
@@ -39,55 +39,55 @@ export const useInvestments = (): UseInvestmentsReturn => {
     refreshInvestments()
   }, [refreshInvestments])
 
-  // Agregar inversión
-  const addInversion = useCallback((input: CreateInvestmentInput) => {
+  // Add investment
+  const addInvestment = useCallback((input: CreateInvestmentInput) => {
     try {
       setError(null)
-      const newInversion = investmentsService.create(input)
-      setInversiones((prev) => [...prev, newInversion])
+      const newInvestment = investmentsService.create(input)
+      setInvestments((prev) => [...prev, newInvestment])
     } catch (err) {
-      setError("Error al crear inversión")
+      setError("Error creating investment")
       console.error(err)
     }
   }, [])
 
-  // Eliminar inversión
-  const deleteInversion = useCallback((id: number) => {
+  // Delete investment
+  const deleteInvestment = useCallback((id: number) => {
     try {
       setError(null)
       const success = investmentsService.delete(id)
       if (success) {
-        setInversiones((prev) => prev.filter((i) => i.id !== id))
+        setInvestments((prev) => prev.filter((i) => i.id !== id))
       }
     } catch (err) {
-      setError("Error al eliminar inversión")
+      setError("Error deleting investment")
       console.error(err)
     }
   }, [])
 
-  // Ajustar inversión
-  const adjustInversion = useCallback((id: number, newAmount: number, reason: string) => {
+  // Adjust investment
+  const adjustInvestment = useCallback((id: number, newAmount: number, reason: string) => {
     try {
       setError(null)
-      const updatedInversion = investmentsService.adjust(id, newAmount, reason)
-      if (updatedInversion) {
-        setInversiones((prev) =>
-          prev.map((i) => (i.id === id ? updatedInversion : i))
+      const updatedInvestment = investmentsService.adjust(id, newAmount, reason)
+      if (updatedInvestment) {
+        setInvestments((prev) =>
+          prev.map((i) => (i.id === id ? updatedInvestment : i))
         )
       }
     } catch (err) {
-      setError("Error al ajustar inversión")
+      setError("Error adjusting investment")
       console.error(err)
     }
   }, [])
 
   return {
-    inversiones,
+    investments,
     isLoading,
     error,
-    addInversion,
-    deleteInversion,
-    adjustInversion,
+    addInvestment,
+    deleteInvestment,
+    adjustInvestment,
     refreshInvestments,
   }
 }

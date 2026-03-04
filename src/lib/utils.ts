@@ -5,7 +5,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const formatCurrency = (amount: number, currency = "COP") => {
+export const formatCurrency = (amount: number, currency?: string): string => {
+    const curr = currency || "COP";
+    
     const currencyConfig = {
       COP: { locale: "es-CO", currency: "COP" },
       EUR: { locale: "es-ES", currency: "EUR" },
@@ -14,7 +16,7 @@ export const formatCurrency = (amount: number, currency = "COP") => {
       JPY: { locale: "ja-JP", currency: "JPY" },
     }
 
-    const config = currencyConfig[currency as keyof typeof currencyConfig] || currencyConfig.COP
+    const config = currencyConfig[curr as keyof typeof currencyConfig] || currencyConfig.COP
 
     return new Intl.NumberFormat(config.locale, {
       style: "currency",
