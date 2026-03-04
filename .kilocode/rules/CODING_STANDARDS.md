@@ -261,6 +261,37 @@ Follow conventional commits:
 
 ---
 
+## Git Workflow Rules
+
+### 🚫 NO Git Operations Without User Permission
+**Always wait for explicit user instruction before performing any Git operations.**
+
+- ❌ DO NOT create branches automatically
+- ❌ DO NOT commit changes automatically  
+- ❌ DO NOT push to remote without permission
+- ❌ DO NOT create or merge PRs without approval
+
+✅ Only execute Git commands when the user explicitly asks for it.
+
+### When User Asks for Git Operations
+When instructed, follow these conventions:
+
+1. **Create Branch**: Use descriptive names with prefixes:
+   - `feat/` for new features
+   - `fix/` for bug fixes
+   - `refactor/` for code refactoring
+   - `docs/` for documentation
+   
+2. **Commits**: Use conventional commits format
+
+3. **PR Description**: Include:
+   - Summary of changes
+   - List of modified files
+   - Breaking changes if any
+   - Testing notes
+
+---
+
 ## Testing (Future)
 
 When adding tests:
