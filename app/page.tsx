@@ -100,35 +100,25 @@ export default function FinanceApp() {
   // RENDER HELPERS - Now using separate components
   // ============================================================================
 
-  // renderProductSection removed - now using ProductCard component directly
+const renderBudgetCards = () => (
+     <ItemsListCard
+       title="Presupuesto"
+       items={[]}
+       icon={BarChart3}
+       darkMode={darkMode}
+       formatCurrencyFn={formatCurrency}
+     />
+   );
 
-  const renderBudgetCards = () => {
-    const budgetItems: any = [];
-
-    return (
-      <ItemsListCard
-        title="Presupuesto"
-        items={budgetItems}
-        icon={BarChart3}
-        darkMode={darkMode}
-        formatCurrencyFn={formatCurrency}
-      />
-    )
-  }
-
-  const renderInvestmentCards = () => {
-    const inversionItems: any =  [];
-
-    return (
-      <ItemsListCard
-        title="Inversiones"
-        items={inversionItems}
-        icon={TrendingUp}
-        darkMode={darkMode}
-        formatCurrencyFn={formatCurrency}
-      />
-    )
-  }
+const renderInvestmentCards = () => (
+     <ItemsListCard
+       title="Inversiones"
+       items={[]}
+       icon={TrendingUp}
+       darkMode={darkMode}
+       formatCurrencyFn={formatCurrency}
+     />
+   );
 
   // ============================================================================
   // MAIN RENDER
