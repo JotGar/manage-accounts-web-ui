@@ -36,7 +36,7 @@ const exchangeRates = {
 }
 
 interface Product {
-  id: number
+  id: string
   name: string
   type: string
   code: string

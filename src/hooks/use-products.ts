@@ -2,7 +2,12 @@
 // Hook personalizado para gestionar productos con estado de React
 
 import { useState, useEffect, useCallback } from "react"
-import { productsService } from "@/src/services/products"
+import {
+  getProducts,
+  createProduct,
+  updateProduct as updateProductApi,
+  deleteProduct as deleteProductApi,
+} from "@/src/services/api-products"
 import type { Product, CreateProductInput } from "@/src/types/products"
 
 interface UseProductsReturn {
@@ -10,8 +15,8 @@ interface UseProductsReturn {
   isLoading: boolean
   error: string | null
   addProduct: (product: CreateProductInput) => void
-  updateProduct: (id: number, updates: any) => void
-  deleteProduct: (id: number) => void
+  updateProduct: (id: string, updates: any) => void
+  deleteProduct: (id: string) => void
   refreshProducts: () => void
 }
 
@@ -21,11 +26,11 @@ export const useProducts = (): UseProductsReturn => {
   const [error, setError] = useState<string | null>(null)
 
   // Cargar productos inicialmente
-  const refreshProducts = useCallback(() => {
+  const refreshProducts = useCallback(async () => {
     try {
       setIsLoading(true)
       setError(null)
-      const data = productsService.getAll()
+      const { data } = await getProducts({})
       setProducts(data)
     } catch (err) {
       setError("Error al cargar productos")
@@ -40,10 +45,10 @@ export const useProducts = (): UseProductsReturn => {
   }, [refreshProducts])
 
   // Agregar producto
-  const addProduct = useCallback((input: CreateProductInput) => {
+  const addProduct = useCallback(async (input: CreateProductInput) => {
     try {
       setError(null)
-      const newProduct = productsService.create(input)
+      const newProduct = await createProduct(input)
       setProducts((prev) => [...prev, newProduct])
     } catch (err) {
       setError("Error al crear producto")
@@ -52,10 +57,10 @@ export const useProducts = (): UseProductsReturn => {
   }, [])
 
   // Actualizar producto
-  const updateProduct = useCallback((id: number, updates: any) => {
+  const updateProduct = useCallback(async (id: string, updates: any) => {
     try {
       setError(null)
-      const updatedProduct = productsService.update(id, { id, ...updates })
+      const updatedProduct = await updateProductApi(id, updates)
       if (updatedProduct) {
         setProducts((prev) =>
           prev.map((p) => (p.id === id ? updatedProduct : p))
@@ -68,10 +73,10 @@ export const useProducts = (): UseProductsReturn => {
   }, [])
 
   // Eliminar producto
-  const deleteProduct = useCallback((id: number) => {
+  const deleteProduct = useCallback(async (id: string) => {
     try {
       setError(null)
-      const success = productsService.delete(id)
+      const success = await deleteProductApi(id)
       if (success) {
         setProducts((prev) => prev.filter((p) => p.id !== id))
       }

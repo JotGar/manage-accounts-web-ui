@@ -32,7 +32,7 @@ export const productsService = {
   /**
    * Obtener un producto por ID
    */
-  getById: (id: number): Product | undefined => {
+  getById: (id: string): Product | undefined => {
     const products = getStoredProducts()
     return products.find((p) => p.id === id)
   },
@@ -45,7 +45,7 @@ export const productsService = {
     
     const newProduct: Product = {
       ...input,
-      id: Math.max(0, ...products.map((p) => p.id)) + 1,
+      id: String(Math.max(0, ...products.map((p) => Number(p.id))) + 1),
       status: BALANCE,
       includeInTotal: input.includeInTotal ?? true,
     }
@@ -59,7 +59,7 @@ export const productsService = {
   /**
    * Actualizar un producto existente
    */
-  update: (id: number, input: UpdateProductInput): Product | undefined => {
+  update: (id: string, input: UpdateProductInput): Product | undefined => {
     const products = getStoredProducts()
     const index = products.findIndex((p) => p.id === id)
     
@@ -77,7 +77,7 @@ export const productsService = {
   /**
    * Eliminar un producto
    */
-  delete: (id: number): boolean => {
+  delete: (id: string): boolean => {
     const products = getStoredProducts()
     const index = products.findIndex((p) => p.id === id)
     

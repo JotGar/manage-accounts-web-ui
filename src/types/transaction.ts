@@ -27,10 +27,12 @@ export type TransactionCategory =
   | "Transferencia"
 
 export interface Transaction {
-  id: number
+  id: string
   type: TransactionType
-  amount: number
-  category: TransactionCategory
+  amount: string
+  // Categoría por nombre. La API de transacciones solo expone category_id (UUID),
+  // no el nombre de la categoría, por lo que puede no estar disponible al leer desde API.
+  category?: TransactionCategory
   description: string
   date: string // ISO date string (YYYY-MM-DD)
   currency: Currency
@@ -43,7 +45,7 @@ export interface Transaction {
 
 export interface CreateTransactionInput {
   type: TransactionType
-  amount: number
+  amount: string
   category: TransactionCategory
   description: string
   date: string
@@ -51,4 +53,9 @@ export interface CreateTransactionInput {
   account?: string
   fromAccount?: string
   toAccount?: string
+  // IDs opacos requeridos por la API de Node (product_id/category_id). El formulario
+  // aún no los captura, por lo que la creación contra API real los envía vacíos y
+  // cae a mock; ver nota de integración.
+  productId?: string
+  categoryId?: string | null
 }

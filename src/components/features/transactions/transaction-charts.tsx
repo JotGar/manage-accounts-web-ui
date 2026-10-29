@@ -10,7 +10,7 @@ interface Transaction {
   id: number
   type: "income" | "expense" | "transfer"
   amount: number
-  category: string
+  category?: string
   description: string
   date: string
   account?: string
@@ -63,7 +63,7 @@ export function TransactionCharts({ transacciones, formatCurrency, darkMode = fa
     const expenses = filteredTransactions.filter((t) => t.type === "expense")
     const categoryTotals = expenses.reduce(
       (acc, transaction) => {
-        acc[transaction.category] = (acc[transaction.category] || 0) + transaction.amount
+        acc[transaction.category ?? ""] = (acc[transaction.category ?? ""] || 0) + transaction.amount
         return acc
       },
       {} as Record<string, number>,

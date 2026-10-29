@@ -11,7 +11,7 @@ import { ProductEditForm } from "./product-edit-form"
 
 
 interface Product {
-  id: number
+  id: string
   name: string
   type: string
   code: string
@@ -25,8 +25,8 @@ interface Product {
 interface ProductsSectionProps {
   productos: Product[]
   onAddProduct: (product: any) => void
-  onDeleteProduct: (id: number) => void
-  onUpdateProduct: (id: number, updates: any) => void
+  onDeleteProduct: (id: string) => void
+  onUpdateProduct: (id: string, updates: any) => void
   formatCurrency: (amount: number, currency?: string) => string
   darkMode?: boolean
 }
@@ -43,7 +43,7 @@ export function ProductsSection({
   const [showEditForm, setShowEditForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
 
-  const handleToggleIncludeInTotal = (id: number, includeInTotal: boolean) => {
+  const handleToggleIncludeInTotal = (id: string, includeInTotal: boolean) => {
     onUpdateProduct(id, { includeInTotal })
   }
 

@@ -14,7 +14,7 @@ export type ProductType =
   | "Cash"
 
 export interface Product {
-  id: number
+  id: string
   name: string
   type: string // Type description (e.g., "Pesos colombianos", "Euro")
   code: string // Code or reference (e.g., "3914 COP • 1 USD")
@@ -36,7 +36,7 @@ export interface CreateProductInput {
 }
 
 export interface UpdateProductInput {
-  id: number
+  id: string
   name?: string
   type?: string
   code?: string

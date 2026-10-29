@@ -3,7 +3,7 @@ import { Product } from "../types/products"
 
 export const mockProducts: Product[] = [
   {
-    id: 1,
+    id: "1",
     name: "Cuenta de Ahorros",
     type: "Pesos colombianos",
     code: "3914 COP • 1 USD",
@@ -14,7 +14,7 @@ export const mockProducts: Product[] = [
     includeInTotal: true,
   },
   {
-    id: 2,
+    id: "2",
     name: "Nequi",
     type: "Pesos colombianos",
     code: "3914 COP • 1 USD",
@@ -25,7 +25,7 @@ export const mockProducts: Product[] = [
     includeInTotal: true,
   },
   {
-    id: 3,
+    id: "3",
     name: "Mi Billetera virtual",
     type: "Euro",
     code: "1 EUR = 13 USD",
@@ -36,7 +36,7 @@ export const mockProducts: Product[] = [
     includeInTotal: false,
   },
   {
-    id: 4,
+    id: "4",
     name: "Cuenta de Inversión",
     type: "Pesos colombianos",
     code: "3914 COP • 1 USD",

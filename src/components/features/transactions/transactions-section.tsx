@@ -29,7 +29,7 @@ interface Transaction {
   id: number
   type: "income" | "expense" | "transfer"
   amount: number
-  category: string
+  category?: string
   description: string
   date: string
   account?: string
@@ -72,7 +72,7 @@ export function TransactionsSection({
   const filteredTransactions = transacciones.filter((transaction) => {
     const matchesSearch =
       transaction.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.category.toLowerCase().includes(searchTerm.toLowerCase())
+      (transaction.category ?? "").toLowerCase().includes(searchTerm.toLowerCase())
     const matchesType = filterType === "all" || transaction.type === filterType
     const matchesCategory = filterCategory === "all" || transaction.category === filterCategory
 
@@ -89,7 +89,9 @@ export function TransactionsSection({
   const balance = totalIncome - totalExpenses
 
   // Obtener categorías únicas
-  const categories = [...new Set(transacciones.map((t) => t.category))]
+  const categories = [
+    ...new Set(transacciones.map((t) => t.category).filter((c): c is string => Boolean(c))),
+  ]
 
   const getTransactionIcon = (type: string) => {
     switch (type) {
